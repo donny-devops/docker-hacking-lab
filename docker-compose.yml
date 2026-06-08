@@ -1,0 +1,109 @@
+﻿version: "3.9"
+
+networks:
+  lab-external:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+  lab-internal:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/24
+
+services:
+
+  attacker:
+    image: kalilinux/kali-rolling
+    container_name: attacker
+    hostname: attacker
+    networks:
+      - lab-external
+      - lab-internal
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_PTRACE
+    stdin_open: true
+    tty: true
+    restart: "no"
+
+  vuln-web:
+    image: php:7.4-apache
+    container_name: vuln-web
+    hostname: vuln-web
+    networks:
+      - lab-external
+      - lab-internal
+    ports:
+      - "8080:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      AWS_ACCESS_KEY_ID: AKIAIOSFODNN7EXAMPLE
+      DB_PASSWORD: SuperSecret123!
+    restart: "no"
+
+  internal-db:
+    image: postgres:13-alpine
+    container_name: internal-db
+    hostname: internal-db
+    networks:
+      - lab-internal
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: corporate_secrets
+    restart: "no"
+
+  registry:
+    image: registry:2
+    container_name: registry
+    hostname: registry
+    networks:
+      - lab-internal
+    ports:
+      - "5000:5000"
+    restart: "no"
+
+  escape-target-privileged:
+    image: ubuntu:20.04
+    container_name: escape-target-privileged
+    hostname: escape-privileged
+    networks:
+      - lab-internal
+    privileged: true
+    command: sleep infinity
+    restart: "no"
+
+  escape-target-hostmount:
+    image: ubuntu:20.04
+    container_name: escape-target-hostmount
+    hostname: escape-hostmount
+    networks:
+      - lab-internal
+    volumes:
+      - /:/host:rw
+    command: sleep infinity
+    restart: "no"
+
+  defender-hardened:
+    image: nginxinc/nginx-unprivileged:alpine
+    container_name: defender-hardened
+    hostname: defender-hardened
+    networks:
+      - lab-internal
+    ports:
+      - "9002:8080"
+    cap_drop:
+      - ALL
+    read_only: true
+    user: "101:101"
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+    restart: "no"
