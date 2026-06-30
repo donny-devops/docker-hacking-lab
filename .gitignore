@@ -1,0 +1,13 @@
+/.venv
+/.env
+/dist
+/build
+/out
+/target
+/node_modules
+/.DS_Store
+Thumbs.db
+*.pyc
+*.swp
+/.idea
+/.vscode
