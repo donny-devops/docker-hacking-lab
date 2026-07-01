@@ -10,7 +10,7 @@ Security fixes are applied on a best‑effort basis to the `main` branch.
 If you discover a vulnerability:
 
 - **Do not** open a public issue with exploit details.
-- Email: security@donny-devops.example (replace with a real address).
+- Email: donnydevops@outlook.com
 - Include:
   - Steps to reproduce
   - Impact assessment
