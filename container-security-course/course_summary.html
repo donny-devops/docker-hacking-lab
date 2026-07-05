@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Security: Course Summary</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+        }
+        
+        .cover {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            page-break-after: always;
+        }
+        
+        .cover h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .cover .subtitle {
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .cover .duration {
+            font-size: 18px;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 25px;
+            margin-top: 20px;
+        }
+        
+        h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            font-size: 28px;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            font-size: 20px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+        
+        .highlight-box {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .module-summary {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .module-summary h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        
+        .key-topics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .topic-item {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .topic-item::before {
+            content: "✓ ";
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        ul {
+            line-height: 1.8;
+        }
+        
+        ul li {
+            margin-bottom: 8px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        strong {
+            color: #764ba2;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <div class="cover">
+        <h1>🛡️ Container Security</h1>
+        <div class="subtitle">From Basics to Advanced Protection</div>
+        <p style="font-size: 18px; margin: 30px 0;">A comprehensive, hands-on course for securing containerized environments</p>
+        <div class="duration">⏱️ 3.5-4 Hours | 💻 12+ Hands-On Labs</div>
+    </div>
+
+    <div class="section">
+        <h2>Course Overview</h2>
+        <p>
+            Container Security: From Basics to Advanced Protection is a practical, hands-on course designed to equip developers, DevOps engineers, and security professionals with the knowledge and skills to secure containerized applications. This course goes beyond theory, providing real-world attack demonstrations, defensive techniques, and production-ready security configurations.
+        </p>
+        
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="stat-number">6</span>
+                <span class="stat-label">Modules</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">20+</span>
+                <span class="stat-label">Video Lessons</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">12</span>
+                <span class="stat-label">Practical Labs</span>
+            </div>
+        </div>
+        
+        <div class="highlight-box">
+            <h3>🎯 Who Should Take This Course?</h3>
+            <ul>
+                <li><strong>DevOps Engineers</strong> managing containerized infrastructure</li>
+                <li><strong>Security Professionals</strong> expanding into cloud-native security</li>
+                <li><strong>Software Developers</strong> building containerized applications</li>
+                <li><strong>System Administrators</strong> deploying container platforms</li>
+                <li><strong>Platform Engineers</strong> responsible for Kubernetes clusters</li>
+            </ul>
+        </div>
+        
+        <div class="highlight-box">
+            <h3>📋 Prerequisites</h3>
+            <ul>
+                <li>Basic Docker/container experience (running containers, basic commands)</li>
+                <li>Linux command line familiarity</li>
+                <li>Understanding of basic networking concepts</li>
+                <li>Access to a Linux environment (VM or WSL2)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="section">
+        <h2>What You'll Learn</h2>
+        
+        <div class="module-summary">
+            <h3>Module 1: Container Security Fundamentals</h3>
+            <p><strong>Duration:</strong> 30-35 minutes</p>
+            <p>Understand the core concepts of container isolation, the shared kernel reality, and fundamental attack surfaces.</p>
+            <div class="key-topics">
+                <div class="topic-item">Namespaces & cgroups</div>
+                <div class="topic-item">Privileged containers</div>
+                <div class="topic-item">Container capabilities</div>
+                <div class="topic-item">Exposed Docker API</div>
+            </div>
+            <p><strong>Key Takeaway:</strong> Containers are NOT virtual machines—they share the host kernel, making isolation mechanisms critical for security.</p>
+        </div>
+        
+        <div class="module-summary">
+            <h3>Module 2: Container Attack Vectors and Vulnerabilities</h3>
+            <p><strong>Duration:</strong> 35-40 minutes</p>
+            <p>Explore real-world attack scenarios including container escapes, image tampering, and resource exhaustion attacks.</p>
+            <div class="key-topics">
+                <div class="topic-item">Container escape techniques</div>
+                <div class="topic-item">Kernel exploits</div>
+                <div class="topic-item">Malicious images</div>
+                <div class="topic-item">DoS attacks</div>
+                <div class="topic-item">Content Trust</div>
+                <div class="topic-item">Insecure configurations</div>
+            </div>
+            <p><strong>Key Takeaway:</strong> Attackers can exploit misconfigurations, vulnerable images, and kernel weaknesses to break out of containers—defense requires multiple layers.</p>
+        </div>
+        
+        <div class="module-summary">
+            <h3>Module 3: Seccomp Profiles in Practice ⭐</h3>
+            <p><strong>Duration:</strong> 40-45 minutes</p>
+            <p>Master system call filtering with Seccomp—from understanding defaults to creating custom profiles for production applications.</p>
+            <div class="key-topics">
+                <div class="topic-item">Seccomp fundamentals</div>
+                <div class="topic-item">Default Docker profiles</div>
+                <div class="topic-item">Custom profile creation</div>
+                <div class="topic-item">Using strace</div>
+                <div class="topic-item">Debugging denials</div>
+                <div class="topic-item">Production best practices</div>
+            </div>
+            <p><strong>Key Takeaway:</strong> Seccomp provides kernel-level syscall filtering that dramatically reduces attack surface—custom profiles tailored to applications offer the strongest protection.</p>
+        </div>
+
+        <div class="module-summary">
+            <h3>Module 4: Mandatory Access Control - AppArmor and SELinux</h3>
+            <p><strong>Duration:</strong> 30-35 minutes</p>
+            <p>Implement Mandatory Access Control systems to enforce fine-grained security policies beyond traditional permissions.</p>
+            <div class="key-topics">
+                <div class="topic-item">MAC vs DAC models</div>
+                <div class="topic-item">AppArmor profiles</div>
+                <div class="topic-item">SELinux contexts</div>
+                <div class="topic-item">Policy generation</div>
+                <div class="topic-item">Troubleshooting denials</div>
+                <div class="topic-item">Tool selection</div>
+            </div>
+            <p><strong>Key Takeaway:</strong> MAC systems like AppArmor and SELinux enforce policies that restrict processes even when running as root—essential for defense in depth.</p>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="section">
+        <div class="module-summary">
+            <h3>Module 5: Orchestration and Supply Chain Security</h3>
+            <p><strong>Duration:</strong> 30-35 minutes</p>
+            <p>Secure Kubernetes deployments and establish supply chain controls including image scanning, signing, and runtime monitoring.</p>
+            <div class="key-topics">
+                <div class="topic-item">Pod Security Standards</div>
+                <div class="topic-item">Security contexts</div>
+                <div class="topic-item">Network policies</div>
+                <div class="topic-item">Image scanning (Trivy/Grype)</div>
+                <div class="topic-item">Image signing (Cosign)</div>
+                <div class="topic-item">Runtime monitoring (Falco)</div>
+            </div>
+            <p><strong>Key Takeaway:</strong> Kubernetes security requires policy enforcement, supply chain validation, and continuous runtime monitoring to prevent and detect threats.</p>
+        </div>
+        
+        <div class="highlight-box">
+            <h3>🔧 Hands-On Lab Highlights</h3>
+            <ul>
+                <li><strong>Privileged Container Escape</strong> - Break out of a container and access the host</li>
+                <li><strong>Image Forensics</strong> - Analyze a compromised container image layer-by-layer</li>
+                <li><strong>Custom Seccomp Profiles</strong> - Build syscall filters for nginx and Python apps</li>
+                <li><strong>AppArmor Profile Generation</strong> - Create and enforce custom security policies</li>
+                <li><strong>Pod Security Standards</strong> - Lock down Kubernetes with restrictive policies</li>
+                <li><strong>Automated Image Scanning</strong> - Integrate Trivy into CI/CD pipelines</li>
+                <li><strong>Runtime Threat Detection</strong> - Deploy Falco and analyze security events</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Course Approach & Methodology</h2>
+        
+        <div class="highlight-box">
+            <h3>💡 100% Practical, Zero Fluff</h3>
+            <p>Every concept is immediately followed by a demonstration or hands-on lab. No PowerPoint-only lectures—you'll see attacks in action and implement defenses yourself.</p>
+        </div>
+        
+        <p><strong>Content Mix:</strong></p>
+        <ul>
+            <li><strong>35-40% Terminal/CLI:</strong> Live command execution, exploit demonstrations, log analysis</li>
+            <li><strong>20-25% Code Editor:</strong> Writing Seccomp profiles, YAML configurations, policy files</li>
+            <li><strong>20-25% Slides:</strong> Architecture diagrams, threat models, security concepts</li>
+            <li><strong>15-20% Browser:</strong> Documentation, scanning dashboards, tool interfaces</li>
+        </ul>
+        
+        <p><strong>Progressive Complexity:</strong> Start with fundamentals, build to advanced techniques. Each module builds on previous knowledge, creating a cohesive learning path.</p>
+        
+        <p><strong>Real-World Focus:</strong> All examples based on actual CVEs, production scenarios, and documented attack patterns. Learn what actually matters in production environments.</p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <div class="section">
+        <h2>Technical Requirements</h2>
+        
+        <div class="highlight-box">
+            <h3>💻 Lab Environment</h3>
+            <ul>
+                <li><strong>RAM:</strong> 4GB minimum, 8GB recommended</li>
+                <li><strong>Disk:</strong> 20GB free space</li>
+                <li><strong>OS:</strong> Linux (Ubuntu 20.04+ or similar) or WSL2 on Windows</li>
+                <li><strong>Software:</strong> Docker Engine 24.0+, kubectl, strace, auditd</li>
+                <li><strong>Optional:</strong> Kubernetes cluster (minikube/kind acceptable)</li>
+            </ul>
+        </div>
+        
+        <p>All necessary vulnerable containers, sample profiles, and validation scripts are provided.</p>
+    </div>
+
+    <div class="section">
+        <h2>Learning Outcomes</h2>
+        <p>By the end of this course, you will be able to:</p>
+        <ul>
+            <li>✅ <strong>Identify</strong> container security vulnerabilities in existing deployments</li>
+            <li>✅ <strong>Exploit</strong> common container weaknesses (in lab environments)</li>
+            <li>✅ <strong>Create</strong> custom Seccomp, AppArmor, and SELinux profiles</li>
+            <li>✅ <strong>Implement</strong> Pod Security Standards in Kubernetes</li>
+            <li>✅ <strong>Integrate</strong> image scanning and signing into CI/CD pipelines</li>
+            <li>✅ <strong>Deploy</strong> runtime monitoring and threat detection systems</li>
+            <li>✅ <strong>Design</strong> layered security architectures for containerized applications</li>
+            <li>✅ <strong>Troubleshoot</strong> security policy denials and misconfigurations</li>
+            <li>✅ <strong>Assess</strong> risk and prioritize security controls for your environment</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Beyond the Course</h2>
+        <p>Container security is an evolving field. This course provides not just current best practices, but the foundational knowledge to adapt as new threats emerge. You'll learn:</p>
+        <ul>
+            <li>How to stay current with container security research</li>
+            <li>Resources for ongoing learning (blogs, tools, communities)</li>
+            <li>Frameworks for evaluating new security tools</li>
+            <li>Strategies for implementing security incrementally in existing environments</li>
+        </ul>
+        
+        <div class="highlight-box">
+            <h3>🎓 Assessment & Certification</h3>
+            <p>The course includes:</p>
+            <ul>
+                <li><strong>18 module-level quizzes</strong> (3 MCQs per module)</li>
+                <li><strong>12 hands-on labs</strong> with automated validation</li>
+                <li><strong>1 comprehensive final assessment</strong> (10 MCQs + capstone lab)</li>
+                <li><strong>Passing criteria:</strong> 75% on assessments + all labs completed</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>Container Security: From Basics to Advanced Protection</strong></p>
+        <p>A comprehensive practical course for securing modern containerized environments</p>
+        <p style="margin-top: 20px; color: #999;">© 2026 - All Rights Reserved</p>
+    </div>
+</body>
+</html>

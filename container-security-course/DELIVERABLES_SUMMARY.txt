@@ -1,0 +1,137 @@
+===============================================================================
+CONTAINER SECURITY MASTERCLASS — DELIVERABLES SUMMARY
+Phase 2: Modules 1 & 2 Complete Content
+Generated: July 2026
+===============================================================================
+
+OVERVIEW
+--------
+This delivery contains complete, production-ready content for Modules 1 and 2
+of the Container Security Masterclass. All scripts are word-for-word narration
+with precise screen directions, commands, code, and timing estimates.
+
+===============================================================================
+MODULE 1: CONTAINER SECURITY FUNDAMENTALS
+===============================================================================
+
+Directory: module_01_fundamentals/
+
+Total Duration: ~34:30 (5 lessons + 1 module summary)
+
+Files Delivered:
+  1. module_summary_script.md    [2:30]  Module overview and orientation
+  2. video_01_script.md          [8:00]  Container Architecture & Isolation
+  3. video_02_script.md          [7:00]  Container vs. VM Security Models
+  4. video_03_script.md          [7:00]  The Shared Kernel Problem
+  5. video_04_script.md          [8:00]  Docker Security Basics & Daemon Config
+  6. video_05_script.md          [7:00]  Container Attack Surface Mapping
+  7. questions.md                        3 module MCQs + 2 final assessment MCQs
+  8. metadata.md                         Complete metadata for all videos
+
+Content Coverage:
+  - Linux namespaces (PID, NET, MNT, UTS, IPC, USER, Cgroup, Time)
+  - Cgroups v2 resource control and security implications
+  - Layered filesystem security and data persistence risks
+  - Container vs. VM architecture comparison with CVE analysis
+  - System call surface quantification (~350 syscalls, ~44 blocked by default)
+  - Cross-container visibility from host perspective
+  - Kernel module risk in privileged contexts
+  - Docker daemon architecture and socket security
+  - daemon.json hardening (insecure vs. secure configuration)
+  - Exposed Docker daemon detection (Shodan)
+  - Default capability analysis and minimization
+  - Docker Content Trust and supply chain security
+  - Docker Bench for Security (CIS benchmark)
+  - Five-layer attack surface model
+  - Image vulnerability scanning with Trivy
+  - Dangerous docker run flags catalog
+  - Supply chain attack vectors
+
+Screen Mix (Module Average):
+  Terminal: 38% | PPT: 27% | Code Editor: 18% | Browser: 17%
+
+===============================================================================
+MODULE 2: PRIVILEGED CONTAINERS & ATTACK VECTORS
+===============================================================================
+
+Directory: module_02_privileged_containers/
+
+Total Duration: ~35:00 (4 lessons + 1 module summary)
+
+Files Delivered:
+  1. module_summary_script.md    [2:30]  Module overview and orientation
+  2. video_01_script.md          [8:00]  What Privileged Containers Are
+  3. video_02_script.md          [8:00]  Host System Compromise Demos
+  4. video_03_script.md          [8:00]  Privilege Escalation & Escape Techniques
+  5. video_04_script.md          [8:30]  Real-World CVE Analysis & Exploitation
+  6. questions.md                        3 module MCQs + 2 final assessment MCQs
+  7. metadata.md                         Complete metadata for all videos
+
+Content Coverage:
+  - --privileged flag: all 8 security mechanisms disabled
+  - Capability comparison: default 14 vs. privileged 41
+  - Seccomp and AppArmor status verification
+  - Device access comparison (default vs. privileged)
+  - Privileged container detection script
+  - Host filesystem mount via block device
+  - Credential harvesting (shadow, SSH keys, cloud credentials)
+  - Three persistence mechanisms (SSH key, backdoor user, cron)
+  - Pivot to other containers via Docker socket
+  - Cgroup release_agent escape technique
+  - CAP_SYS_ADMIN-only escape (non-privileged)
+  - Docker socket mount escalation
+  - Host PID namespace credential exposure
+  - Writable host path traversal attacks
+  - CVE-2019-5736 (runc /proc/self/exe overwrite) — full chain analysis
+  - CVE-2020-15257 (containerd abstract socket via host networking)
+  - CVE-2022-0185 (kernel heap overflow via fsconfig) — full chain analysis
+  - CVE comparison matrix across attack layers
+  - Container CVE response playbook
+
+Screen Mix (Module Average):
+  Terminal: 42% | Code Editor: 24% | PPT: 20% | Browser: 14%
+
+===============================================================================
+ASSESSMENT QUESTIONS SUMMARY
+===============================================================================
+
+Module 1:
+  - 3 module-level MCQs (namespace isolation, daemon security, shared kernel)
+  - 2 final assessment MCQs (defense-in-depth PCI scenario, attack surface analysis)
+
+Module 2:
+  - 3 module-level MCQs (privileged behavior, socket escape, CVE impact)
+  - 2 final assessment MCQs (multi-vector attack scenario, defensive architecture)
+
+Total: 10 MCQs (all with 4 options, correct answer, detailed explanation)
+
+===============================================================================
+TECHNICAL SPECIFICATIONS (ALL VIDEOS)
+===============================================================================
+
+Resolution:         1920x1080 Full HD
+Frame Rate:         30fps constant
+Terminal:           Dark theme (Dracula/One Dark), 150% zoom
+Code Editor:        VS Code, 150% zoom, max 20-22 lines visible
+PPT Slides:         Maximized, 150% for readability
+Browser:            Chromium/Chrome, 150% zoom, pre-loaded pages
+Host OS:            Ubuntu 22.04 LTS
+Docker Version:     24.x+ with Docker Compose v2
+Safety Overlays:    Lab environment banners on all attack demonstrations
+Ethical Disclaimers: Required on all offensive security content
+
+===============================================================================
+COMBINED TOTALS
+===============================================================================
+
+Total Videos:           9 lesson videos + 2 module summaries = 11 videos
+Total Runtime:          ~69:30
+Total MCQs:             10 (6 module-level + 4 final assessment)
+Total Script Files:     16 markdown files
+Total Metadata Files:   2
+Total Question Files:   2
+
+===============================================================================
+PHASE 2 STATUS: COMPLETE
+Next: Module 3 (Seccomp — sample scripts already created in Phase 1)
+===============================================================================
