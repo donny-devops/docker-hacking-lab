@@ -1,0 +1,350 @@
+# Instincts generated from https://github.com/donny-devops/docker-hacking-lab
+# Generated: 2026-07-05T21:04:00.344Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: docker-hacking-lab-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Commit Length
+
+## Action
+
+Write moderate-length commit messages (~63 characters)
+
+## Evidence
+
+- Average commit message length: 63 chars
+- Based on 1 commits
+
+---
+id: docker-hacking-lab-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Naming Files
+
+## Action
+
+Use snake_case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: snake_case
+
+---
+id: docker-hacking-lab-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: docker-hacking-lab-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: docker-hacking-lab-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: docker-hacking-lab-workflow-add-new-course-module
+trigger: "when doing add new course module"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Workflow Add New Course Module
+
+## Action
+
+Follow the add-new-course-module workflow:
+1. Create a new module directory under container-security-course/ with a descriptive name (e.g., module_01_fundamentals).
+2. Add video scripts for each topic in the module in .md, .docx, and .pdf formats.
+3. Add a module summary script in .md, .docx, and .pdf formats.
+4. Add questions for the module in .md, .docx, and .pdf formats.
+5. Add metadata for the module in .md, .docx, and .pdf formats.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: container-security-course/module_XX_*/video_YY_script.md, container-security-course/module_XX_*/video_YY_script.docx, container-security-course/module_XX_*/video_YY_script.pdf
+
+---
+id: docker-hacking-lab-workflow-add-multiformat-course-document
+trigger: "when doing add multiformat course document"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Workflow Add Multiformat Course Document
+
+## Action
+
+Follow the add-multiformat-course-document workflow:
+1. Create or update the document in Markdown (.md).
+2. Convert or export the document to DOCX (.docx).
+3. Convert or export the document to PDF (.pdf).
+4. For summaries, optionally add HTML (.html) format.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: container-security-course/course_outline.md, container-security-course/course_outline.docx, container-security-course/course_outline.pdf
+
+---
+id: docker-hacking-lab-instinct-file-naming
+trigger: "When creating or renaming a file in the codebase"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct File Naming
+
+## Action
+
+Use snake_case for file names
+
+## Evidence
+
+- Pattern in container-security-course/module_XX_*/video_YY_script.md
+
+---
+id: docker-hacking-lab-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Function Naming
+
+## Action
+
+Use camelCase for function names
+
+## Evidence
+
+- Naming convention specified in analysis
+
+---
+id: docker-hacking-lab-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Class Naming
+
+## Action
+
+Use PascalCase for class names
+
+## Evidence
+
+- Naming convention specified in analysis
+
+---
+id: docker-hacking-lab-instinct-constant-naming
+trigger: "When defining a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Constant Naming
+
+## Action
+
+Use SCREAMING_SNAKE_CASE for constant names
+
+## Evidence
+
+- Naming convention specified in analysis
+
+---
+id: docker-hacking-lab-instinct-import-style
+trigger: "When importing modules in TypeScript files"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Import style specified in analysis
+
+---
+id: docker-hacking-lab-instinct-export-style
+trigger: "When exporting modules or functions"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Export style specified in analysis
+
+---
+id: docker-hacking-lab-instinct-test-location
+trigger: "When adding or updating tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Test Location
+
+## Action
+
+Place test files in a separate directory from source code
+
+## Evidence
+
+- Architecture: testLocation is 'separate'
+
+---
+id: docker-hacking-lab-instinct-git-commit-format
+trigger: "When writing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Git Commit Format
+
+## Action
+
+Use a freeform message without a strict prefix, typically describing the action performed (e.g., 'Add Container Security Course content (Phase 1 + Modules 1 & 2)')
+
+## Evidence
+
+- Seen in commit: 'Add Container Security Course content (Phase 1 + Modules 1 & 2)'
+- No prefix pattern detected
+
+---
+id: docker-hacking-lab-instinct-add-new-course-module
+trigger: "When a new training module needs to be added to the course"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Add New Course Module
+
+## Action
+
+Create a new module directory under container-security-course/ with a descriptive name, and add video scripts, summary, questions, and metadata in .md, .docx, and .pdf formats
+
+## Evidence
+
+- Workflow: add-new-course-module
+- Commit sequence and files in example
+
+---
+id: docker-hacking-lab-instinct-add-multiformat-course-document
+trigger: "When adding or updating general course documentation (outline, summary, metadata template)"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: donny-devops/docker-hacking-lab
+---
+
+# Docker Hacking Lab Instinct Add Multiformat Course Document
+
+## Action
+
+Create or update the document in Markdown, then convert/export to DOCX and PDF, and for summaries, optionally add HTML format
+
+## Evidence
+
+- Workflow: add-multiformat-course-document
+- Commit sequence and files in example
+
