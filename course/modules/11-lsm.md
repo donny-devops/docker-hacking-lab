@@ -1,5 +1,5 @@
 # What Seccomp, AppArmor, and SELinux Actually Do
-Covers LSM roles, Docker defaults, custom profiles, and operational pitfalls.
+Covers Linux security modules in Docker/Kubernetes, default profiles, custom profiles, and real limitations.
 
 ## Seccomp
 Restricts syscalls. Docker default blocks ~44 dangerous syscalls.
