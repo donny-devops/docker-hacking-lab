@@ -1,11 +1,18 @@
-# Hands-on Docker Hacking
-**For editorial board review.**
+# Docker Hacking Lab
 
-## Scope
-- 11 modules with intro, attack scenario, compliant/noncompliant examples, remediation, lab
-- 22 assessments: 3 questions per module quiz + 2 final questions per module
-- Files stored in `course/modules/` and `course/quizzes/`
+> Warning: This lab contains intentional vulnerabilities. Run in an isolated environment only.
 
-## Notes
-- Draft PR opened: see linked PR
-- Target runtime: Docker Desktop / Linux host
+Hands-on Docker Hacking course.
+
+## Course modules
+01 - Privileged Containers
+02 - Exposed Container APIs
+03 - Container Escape
+04 - Container Image Tampering
+05 - Insecure Configuration
+06 - Denial-of-Service
+07 - Kernel Vulnerabilities
+08 - Shared Kernel Exploitation
+09 - Insecure Container Orchestration
+10 - Insecure Container Images
+11 - What Seccomp, AppArmor, and SELinux Actually Do
