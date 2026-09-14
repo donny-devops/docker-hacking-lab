@@ -1,35 +1,46 @@
-﻿#!/usr/bin/env bash
-# MODULE 2: Container Enumeration & Reconnaissance
-# Run from attacker container
+#!/usr/bin/env bash
+# MODULE 2: Container enumeration (read-only). Isolated lab only.
+set -u
 
 echo "============================================"
-echo " DOCKER ENVIRONMENT ENUMERATION"
+echo " DOCKER ENVIRONMENT ENUMERATION (DETECT)"
 echo "============================================"
 
-echo "[*] Hostname and identity..."
-hostname && id && uname -a
+echo "[*] Hostname and identity"
+hostname 2>/dev/null || true
+id 2>/dev/null || true
+uname -a 2>/dev/null || true
 
-echo "[*] Network interfaces and routes..."
-ip addr show
-ip route show
+echo "[*] Network interfaces and routes"
+if command -v ip >/dev/null 2>&1; then
+  ip addr show
+  ip route show
+else
+  echo "iproute2 not installed"
+fi
 
-echo "[*] All hosts in /etc/hosts..."
-cat /etc/hosts
+echo "[*] /etc/hosts"
+cat /etc/hosts 2>/dev/null || true
 
-echo "[*] Environment variables (looking for secrets)..."
-env | grep -iE "key|pass|secret|token|api" || echo "None found"
+echo "[*] Environment keys that look like secrets (names only)"
+env | awk -F= 'BEGIN{IGNORECASE=1} $1 ~ /key|pass|secret|token|api/ {print $1}' || true
 
-echo "[*] Mounted filesystems..."
-mount | grep -v "^cgroup\|^proc\|^sys\|^dev\|^tmpfs"
+echo "[*] Mounted filesystems"
+mount 2>/dev/null | grep -vE '^cgroup|^proc|^sys|^dev|^tmpfs' || true
 
-echo "[*] Running processes..."
-ps aux 2>/dev/null || ps
+echo "[*] Listening sockets"
+if command -v ss >/dev/null 2>&1; then
+  ss -tlnp 2>/dev/null || ss -tln
+elif command -v netstat >/dev/null 2>&1; then
+  netstat -tln 2>/dev/null || true
+fi
 
-echo "[*] Listening ports..."
-netstat -tlnp 2>/dev/null || ss -tlnp
+echo "[*] Docker socket present?"
+if [[ -S /var/run/docker.sock ]]; then
+  echo "[!] FINDING: docker.sock is available in this namespace"
+else
+  echo "No docker.sock in this namespace"
+fi
 
-echo "[*] Checking for Docker socket..."
-ls -la /var/run/docker.sock 2>/dev/null && echo "[!] Docker socket accessible — ESCAPE VECTOR" || echo "No socket found"
-
-echo "[*] Checking capabilities..."
-cat /proc/self/status | grep Cap
+echo "[*] Capability bits"
+grep -E '^Cap' /proc/self/status 2>/dev/null || true

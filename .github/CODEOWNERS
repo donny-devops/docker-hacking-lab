@@ -1,0 +1,11 @@
+# GitHub CODEOWNERS (canonical). CODEOWNERS.md is documentation only.
+
+*       @donny-devops
+
+/.github/    @donny-devops
+/course/     @donny-devops
+/lab/        @donny-devops
+/solutions/  @donny-devops
+/tests/      @donny-devops
+*.yml        @donny-devops
+*.md         @donny-devops

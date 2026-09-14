@@ -1,0 +1,171 @@
+# Standalone hardened lab. Compare with docker-compose.yml for the teaching delta.
+
+name: docker-hacking-lab-hardened
+
+networks:
+  lab-external:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+  lab-internal:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.22.0.0/24
+
+services:
+
+  attacker:
+    image: kalilinux/kali-rolling
+    container_name: attacker
+    hostname: attacker
+    labels:
+      lab.role: workstation
+    networks:
+      - lab-external
+      - lab-internal
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    security_opt:
+      - no-new-privileges:true
+    stdin_open: true
+    tty: true
+    restart: "no"
+
+  vuln-web:
+    image: php:7.4-apache
+    container_name: vuln-web
+    hostname: vuln-web
+    labels:
+      lab.role: hardened
+    networks:
+      - lab-external
+      - lab-internal
+    ports:
+      - "${LAB_BIND_ADDRESS:-127.0.0.1}:8080:80"
+    volumes:
+      - ./lab/www:/var/www/html:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run/apache2
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "pidof apache2 >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: "no"
+
+  internal-db:
+    image: postgres:13-alpine
+    container_name: internal-db
+    hostname: internal-db
+    labels:
+      lab.role: hardened
+    networks:
+      - lab-internal
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lab-only-password}
+      POSTGRES_DB: ${POSTGRES_DB:-corporate_secrets}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-corporate_secrets}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: "no"
+
+  registry:
+    image: registry:2
+    container_name: registry
+    hostname: registry
+    labels:
+      lab.role: hardened
+      lab.note: unpublished-on-host-still-unauthenticated-on-lab-internal
+    networks:
+      - lab-internal
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: "false"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:5000/v2/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: "no"
+
+  escape-target-privileged:
+    image: ubuntu:20.04
+    container_name: escape-target-privileged
+    hostname: escape-privileged
+    labels:
+      lab.role: hardened
+    networks:
+      - lab-internal
+    cap_drop:
+      - ALL
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    user: "65534:65534"
+    init: true
+    command: sleep infinity
+    restart: "no"
+
+  escape-target-hostmount:
+    image: ubuntu:20.04
+    container_name: escape-target-hostmount
+    hostname: escape-hostmount
+    labels:
+      lab.role: hardened
+    networks:
+      - lab-internal
+    cap_drop:
+      - ALL
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    user: "65534:65534"
+    init: true
+    command: sleep infinity
+    restart: "no"
+
+  defender-hardened:
+    image: nginxinc/nginx-unprivileged:alpine
+    container_name: defender-hardened
+    hostname: defender-hardened
+    labels:
+      lab.role: secure-baseline
+    networks:
+      - lab-internal
+    ports:
+      - "${LAB_BIND_ADDRESS:-127.0.0.1}:9002:8080"
+    cap_drop:
+      - ALL
+    read_only: true
+    user: "101:101"
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: "no"

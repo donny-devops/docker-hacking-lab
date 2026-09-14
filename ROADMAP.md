@@ -2,36 +2,27 @@
 
 ## Phase 1 – Foundations
 
-- **Lab setup**
-  - Base Docker and Compose configuration
-  - Isolated lab network
-- **Core scenarios**
-  - Misconfigured containers
-  - Basic privilege escalation examples
-- **Docs**
-  - Quickstart
-  - Safety and legal disclaimer
+- [x] Base Docker and Compose configuration
+- [x] Isolated lab network (`lab-internal` is internal)
+- [x] Core misconfiguration scenarios (privileged, socket, host mount)
+- [x] Quickstart, safety warning, and support doc
 
 ## Phase 2 – Advanced Scenarios
 
-- Container escape techniques (controlled, documented)
-- Supply‑chain attacks in CI/CD (safe simulations)
-- Secrets management and secret scanning demos
-- Webhooks and mailhooks security examples
+- [x] Course catalog modules 01–11 (privileged containers included)
+- [x] Unique quizzes (no copy-paste assessments)
+- [ ] Optional Kubernetes manifests that mirror the Compose findings
+- [ ] Image signing demo using a local Sigstore/cosign flow
 
 ## Phase 3 – Security Automation
 
-- GitHub Actions workflows:
-  - Code scanning (CodeQL)
-  - Dependabot alerts and updates
-  - Secret scanning and push protection
-- Hardened branch protection rules:
-  - Required reviews
-  - Status checks
-  - Signed commits
+- [x] GitHub Actions validation workflow
+- [x] Dependabot for Actions, pip, and the lab Dockerfile
+- [ ] CodeQL (when application code warrants it)
+- [ ] Branch protection requiring the `lab-validate` check
 
 ## Phase 4 – Community and Ecosystem
 
-- Community‑contributed scenarios
+- Community-contributed scenarios
 - Integration with other labs or CTF platforms
-- Optional self‑hosted runner setups (with strict guidance)
+- Optional self-hosted runner setups (with strict guidance)

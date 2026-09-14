@@ -1,19 +1,23 @@
-﻿#!/usr/bin/env bash
-# MODULE 7: Registry Attack + Secret Extraction
-# Target: registry:5000 (no auth)
+#!/usr/bin/env bash
+# MODULE 7: Registry hygiene check. Isolated lab only.
+set -u
 
-REGISTRY="registry:5000"
+REGISTRY="${REGISTRY:-registry:5000}"
 
-echo "[*] Enumerating registry catalog..."
-curl -sf http:///v2/_catalog
+echo "[*] Registry catalog (unauthenticated GET is a configuration check)"
+if command -v curl >/dev/null 2>&1; then
+  curl -sf "http://${REGISTRY}/v2/" >/dev/null && echo "v2 API reachable without auth at ${REGISTRY}" || echo "v2 API not reachable (good if intended)"
+else
+  echo "curl not installed"
+fi
 
-echo "[*] Extracting secrets from container environments..."
-docker ps -q | while read CID; do
-  echo "--- Container:  ---"
-  docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}'  \
-    | grep -iE "password|secret|key|token"
-done
+if command -v docker >/dev/null 2>&1; then
+  echo "[*] Environment keys on running containers (names matching secret patterns)"
+  docker ps -q | while read -r cid; do
+    echo "--- ${cid} ---"
+    docker inspect --format '{{range .Config.Env}}{{println .}}{{end}}' "$cid" \
+      | awk -F= 'BEGIN{IGNORECASE=1} $1 ~ /PASSWORD|SECRET|KEY|TOKEN/ {print $1}'
+  done
+fi
 
-echo "[*] Scanning image layers for baked-in secrets..."
-docker history vuln-web --no-trunc \
-  | grep -iE "password|secret|key|ENV"
+echo "[*] Remediation: require registry auth, pin digests, and stop publishing the registry to the host."

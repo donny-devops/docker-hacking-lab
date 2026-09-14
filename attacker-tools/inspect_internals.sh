@@ -1,26 +1,34 @@
-﻿#!/usr/bin/env bash
-# MODULE 1: Docker Internals — Kernel Primitive Inspection
-# Run from any container to understand isolation boundaries
+#!/usr/bin/env bash
+# MODULE 1: Kernel primitive inspection (read-only). Isolated lab only.
+set -u
 
 echo "============================================"
 echo " LINUX KERNEL PRIMITIVES — CONTAINER VIEW"
 echo "============================================"
 
-echo "[*] Namespaces this container is in..."
-ls -la /proc/self/ns/
-lsns -p UTF8 2>/dev/null
+echo "[*] Namespaces"
+ls -la /proc/self/ns/ 2>/dev/null || true
+if command -v lsns >/dev/null 2>&1; then
+  lsns -p $$ 2>/dev/null || lsns 2>/dev/null || true
+fi
 
-echo "[*] Linux capabilities (raw hex)..."
-cat /proc/self/status | grep -E "^Cap"
+echo "[*] Capability masks"
+grep -E '^Cap' /proc/self/status 2>/dev/null || true
 
-echo "[*] Decoded capabilities..."
-capsh --decode= 2>/dev/null
+echo "[*] capsh decode (if installed)"
+if command -v capsh >/dev/null 2>&1; then
+  capsh --print 2>/dev/null || true
+fi
 
-echo "[*] Cgroup memberships..."
-cat /proc/self/cgroup
+echo "[*] Cgroup membership"
+cat /proc/self/cgroup 2>/dev/null || true
 
-echo "[*] Seccomp status..."
-cat /proc/self/status | grep Seccomp
+echo "[*] Seccomp"
+grep -i Seccomp /proc/self/status 2>/dev/null || true
 
-echo "[*] AppArmor profile..."
-cat /proc/self/attr/current 2>/dev/null || echo "AppArmor not enforced"
+echo "[*] AppArmor/SELinux current context"
+if [[ -r /proc/self/attr/current ]]; then
+  cat /proc/self/attr/current
+else
+  echo "No /proc/self/attr/current"
+fi
