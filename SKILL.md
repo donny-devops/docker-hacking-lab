@@ -3,8 +3,8 @@
 ## Core Skills
 
 - Understand Docker container isolation and its limits.
-- Identify and exploit common misconfigurations (in a safe lab).
-- Apply secure defaults and hardening techniques.
+- Identify common misconfigurations in an isolated lab (privileged mode, socket mounts, host-root binds).
+- Apply secure defaults and compare them with `docker-compose.hardened.yml`.
 
 ## Advanced Skills
 
@@ -13,11 +13,11 @@
   - Secret scanning
   - Code scanning
   - Dependabot
-- Design secure webhooks and mailhooks integrations.
+- Write Compose static checks (`solutions/detect_misconfigurations.py`).
 
 ## Recommended Path
 
-1. Run basic lab scenarios.
-2. Explore insecure configurations.
-3. Apply mitigations and compare behavior.
-4. Integrate security automation into workflows.
+1. Run `make test`, then the insecure Compose baseline.
+2. Inspect labels and findings with `attacker-tools/` helpers.
+3. Apply the hardened topology and re-run the detector.
+4. Keep the `lab-validate` GitHub Actions check green.

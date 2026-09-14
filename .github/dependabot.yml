@@ -1,8 +1,5 @@
 version: 2
 updates:
-  # -----------------------------
-  # 1. GitHub Actions
-  # -----------------------------
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -15,11 +12,8 @@ updates:
           - "*"
     open-pull-requests-limit: 3
 
-  # -----------------------------
-  # 2. Docker
-  # -----------------------------
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/lab"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -30,24 +24,6 @@ updates:
           - "*"
     open-pull-requests-limit: 3
 
-  # -----------------------------
-  # 3. npm (optional)
-  # -----------------------------
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "06:30"
-    groups:
-      node-packages:
-        patterns:
-          - "*"
-    open-pull-requests-limit: 5
-
-  # -----------------------------
-  # 4. pip (optional)
-  # -----------------------------
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
@@ -62,4 +38,3 @@ updates:
           - "*"
     insecure-external-code-execution: "deny"
     open-pull-requests-limit: 3
-

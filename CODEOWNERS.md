@@ -1,15 +1,10 @@
 # CODEOWNERS for docker-hacking-lab
 
-# Global owners
-*       @donny-devops
+Canonical owners file: `.github/CODEOWNERS` (this Markdown file is documentation).
 
-# Infrastructure and Docker
-/docker/    @donny-devops
-/compose/   @donny-devops
-
-# CI/CD and security workflows
-.github/    @donny-devops
-
-# Documentation and meta
-/docs/      @donny-devops
-*.md        @donny-devops
+- Global: `@donny-devops`
+- CI: `.github/`
+- Course catalog: `/course/`
+- Lab runtime: `/lab/`, Compose files
+- Defensive solutions: `/solutions/`
+- Tests: `/tests/`

@@ -18,9 +18,10 @@ By participating, you agree to follow the guidelines in `CODE_OF_CONDUCT.md`.
 
 **2. Development**
 
-- Keep scenarios self‑contained and clearly documented.
-- Add or update tests where applicable.
+- Keep scenarios self-contained and clearly documented.
+- Add or update tests where applicable (`make test` must stay green).
 - Ensure `docker-compose` files are minimal and reproducible.
+- Detection helpers belong in `attacker-tools/` and `solutions/`; do not add exploit payloads.
 
 **3. Commit style**
 
