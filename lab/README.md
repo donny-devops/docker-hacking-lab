@@ -9,10 +9,10 @@ cp .env.example .env
 docker compose up -d
 ```
 
-## Hardened overlay (defensive solution)
+## Hardened topology (defensive solution)
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.hardened.yml up -d
+docker compose -f docker-compose.hardened.yml up -d
 ```
 
 ## Validate without starting containers

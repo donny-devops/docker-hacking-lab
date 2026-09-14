@@ -2,6 +2,10 @@
 
 Linux security modules filter syscalls (seccomp) or enforce MAC on paths/labels (AppArmor, SELinux). They complement capabilities; they do not replace patching.
 
+## Attack scenario
+
+An operator launches a workload with `seccomp=unconfined` (or `--privileged`) so a one-off binary can call unusual syscalls. The extra kernel attack surface stays on for the rest of the container's life.
+
 ## Seccomp
 
 Restricts syscalls. Docker's default profile blocks a set of dangerous calls. `--security-opt seccomp=unconfined` turns that off.

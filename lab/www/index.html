@@ -15,7 +15,7 @@
   <p>Use the course catalog in <code>course/modules/</code> and the defensive checks in <code>solutions/</code>.</p>
   <ul>
     <li>Insecure baseline: <code>docker compose up -d</code></li>
-    <li>Hardened overlay: <code>docker compose -f docker-compose.yml -f docker-compose.hardened.yml up -d</code></li>
+    <li>Hardened topology: <code>docker compose -f docker-compose.hardened.yml up -d</code></li>
     <li>Validation: <code>make test</code></li>
   </ul>
 </body>
