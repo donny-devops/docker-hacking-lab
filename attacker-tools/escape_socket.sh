@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 5: Detect Docker socket exposure. Isolated lab only.
 # Does not call mutating Engine API methods.
 set -u

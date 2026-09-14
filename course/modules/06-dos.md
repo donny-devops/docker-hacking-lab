@@ -1,6 +1,6 @@
 # Denial-of-Service (DoS)
 
-Containers share host CPU, memory, PIDs, and I/O. Without cgroup limits, one workload can starve neighbors or the host.
+Containers share host CPU, memory, and I/O, and they consume host PID *capacity* even though each container has its own PID namespace by default. Without cgroup limits, one workload can starve neighbors or the host.
 
 ## Attack scenario
 

@@ -18,7 +18,7 @@ scripts:
 
 compose-config:
 	@if command -v docker >/dev/null 2>&1; then \
-		docker compose -f docker-compose.yml config >/dev/null && echo "compose: OK"; \
+		docker compose -f docker-compose.yml config >/dev/null && echo "compose: OK" && \
 		docker compose -f docker-compose.hardened.yml config >/dev/null && echo "hardened compose: OK"; \
 	else \
 		echo "Docker is not installed; YAML is still checked by pytest."; \

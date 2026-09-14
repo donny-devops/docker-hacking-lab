@@ -1,0 +1,23 @@
+{
+  "name": "granola-engineer",
+  "displayName": "granola-engineer",
+  "version": "1.0.0",
+  "description": "Decisions-aware assistant that anchors docker-hacking-lab work to Granola meeting context. Educational and defensive use only.",
+  "author": {
+    "name": "donny-devops"
+  },
+  "homepage": "https://granola.ai",
+  "license": "MIT",
+  "keywords": [
+    "granola",
+    "meetings",
+    "decisions",
+    "agents",
+    "docker-hacking-lab"
+  ],
+  "agents": "./agents/",
+  "skills": "./skills/",
+  "rules": "./rules/",
+  "commands": "./commands/",
+  "mcpServers": "./mcp.json"
+}

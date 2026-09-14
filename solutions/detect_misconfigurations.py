@@ -2,7 +2,7 @@
 """Detect teaching misconfigurations in lab Compose files.
 
 Educational use only. Reports privileged mode, host-root mounts, Docker socket
-bind-mounts, published daemon-like ports, and example secrets. Does not exploit
+bind-mounts, overly broad published ports, and example secrets. Does not exploit
 or mutate running systems.
 """
 from __future__ import annotations
@@ -26,6 +26,8 @@ EXAMPLE_SECRET_MARKERS = (
     "password123",
 )
 
+LOOPBACK_MARKERS = ("127.0.0.1", "::1", "localhost")
+
 
 def load_compose(path: Path) -> dict:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -45,6 +47,37 @@ def _volume_strings(service: dict) -> list[str]:
             target = item.get("target") or item.get("container") or ""
             out.append(f"{source}:{target}")
     return out
+
+
+def _ip_is_loopback(value: str) -> bool:
+    text = value.strip().lower().strip("[]")
+    return any(marker in text for marker in LOOPBACK_MARKERS)
+
+
+def published_port_is_broad(mapping) -> bool:
+    """True when Compose would bind the host port beyond loopback.
+
+    Short form ``8080:80`` publishes on all interfaces. An omitted long-form
+    ``host_ip`` does the same. Loopback and ``${VAR:-127.0.0.1}`` defaults are OK.
+    """
+    if isinstance(mapping, dict):
+        if mapping.get("published") is None and mapping.get("target") is None:
+            return False
+        host_ip = mapping.get("host_ip")
+        if host_ip in (None, "", "0.0.0.0", "::", "*", "[::]"):
+            return True
+        return not _ip_is_loopback(str(host_ip))
+
+    text = str(mapping).strip()
+    if not text:
+        return False
+    if "0.0.0.0" in text or text.startswith("[::]") or "[::]:" in text:
+        return True
+    if "2375" in text and not _ip_is_loopback(text):
+        return True
+    if _ip_is_loopback(text):
+        return False
+    return True
 
 
 def inspect_service(name: str, service: dict) -> list[dict]:
@@ -105,14 +138,13 @@ def inspect_service(name: str, service: dict) -> list[dict]:
             break
 
     for mapping in service.get("ports") or []:
-        text = str(mapping)
-        if "2375" in text or "0.0.0.0:" in text:
+        if published_port_is_broad(mapping):
             findings.append(
                 {
                     "service": name,
                     "id": FINDING_PUBLISHED_PORT,
                     "severity": "high",
-                    "message": f"Published port mapping may be overly broad: {text}",
+                    "message": f"Published port mapping may be overly broad: {mapping}",
                     "remediation": "Bind to 127.0.0.1 or a private management network; require TLS client auth for Docker APIs.",
                 }
             )

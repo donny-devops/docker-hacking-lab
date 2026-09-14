@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 2: Container enumeration (read-only). Isolated lab only.
 set -u
 

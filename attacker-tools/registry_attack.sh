@@ -1,8 +1,8 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 7: Registry hygiene check. Isolated lab only.
 set -u
 
-REGISTRY="${REGISTRY:-127.0.0.1:5000}"
+REGISTRY="${REGISTRY:-registry:5000}"
 
 echo "[*] Registry catalog (unauthenticated GET is a configuration check)"
 if command -v curl >/dev/null 2>&1; then

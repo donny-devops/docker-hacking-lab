@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 4: Detect host-root bind mounts. Isolated lab only.
 # Does not read host credential files or chroot.
 set -u

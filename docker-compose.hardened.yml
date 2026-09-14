@@ -47,7 +47,7 @@ services:
       - lab-external
       - lab-internal
     ports:
-      - "127.0.0.1:8080:80"
+      - "${LAB_BIND_ADDRESS:-127.0.0.1}:8080:80"
     volumes:
       - ./lab/www:/var/www/html:ro
     read_only: true
@@ -79,11 +79,11 @@ services:
     networks:
       - lab-internal
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: lab-only-password
-      POSTGRES_DB: corporate_secrets
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lab-only-password}
+      POSTGRES_DB: ${POSTGRES_DB:-corporate_secrets}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d corporate_secrets"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-corporate_secrets}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -95,6 +95,7 @@ services:
     hostname: registry
     labels:
       lab.role: hardened
+      lab.note: unpublished-on-host-still-unauthenticated-on-lab-internal
     networks:
       - lab-internal
     environment:
@@ -151,7 +152,7 @@ services:
     networks:
       - lab-internal
     ports:
-      - "127.0.0.1:9002:8080"
+      - "${LAB_BIND_ADDRESS:-127.0.0.1}:9002:8080"
     cap_drop:
       - ALL
     read_only: true

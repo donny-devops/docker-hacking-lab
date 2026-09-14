@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 10: Runtime defense comparison. Isolated lab only.
 set -u
 
@@ -20,10 +20,9 @@ echo "[*] defender-hardened security posture"
 inspect_fields defender-hardened
 
 if command -v docker >/dev/null 2>&1; then
-  echo "[*] Write test on defender-hardened (expect denial)"
-  docker exec defender-hardened touch /test 2>&1 || true
-  echo "[*] User inside defender-hardened"
+  echo "[*] User inside defender-hardened (inspect only; no writes)"
   docker exec defender-hardened id 2>&1 || true
 fi
 
 echo "[*] Compare with docker-compose.hardened.yml and solutions/detect_misconfigurations.py"
+echo "[*] ReadonlyRootfs=true is the write-denial signal; this helper does not create files."

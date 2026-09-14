@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import subprocess
 import sys
@@ -42,6 +43,14 @@ def test_attacker_scripts_parse(script):
 
 @pytest.mark.scripts
 @pytest.mark.parametrize("script", sorted(EXPECTED_SCRIPTS))
+def test_attacker_scripts_have_no_utf8_bom(script):
+    data = (ATTACKER_TOOLS / script).read_bytes()
+    assert not data.startswith(b"\xef\xbb\xbf"), script
+    assert data.startswith(b"#!/"), script
+
+
+@pytest.mark.scripts
+@pytest.mark.parametrize("script", sorted(EXPECTED_SCRIPTS))
 def test_attacker_scripts_are_defensive(script):
     text = (ATTACKER_TOOLS / script).read_text(encoding="utf-8")
     lowered = text.lower()
@@ -51,6 +60,7 @@ def test_attacker_scripts_are_defensive(script):
     assert "arpspoof" not in lowered
     assert "C:\\Users\\" not in text
     assert "reverse shell" not in lowered
+    assert "touch /test" not in lowered
 
 
 @pytest.mark.scripts
@@ -84,6 +94,47 @@ def test_seccomp_profile_is_allow_list():
     assert blocked_examples.isdisjoint(names)
     assert "read" in names
     assert "write" in names
+    arch_map = profile["archMap"][0]
+    assert "subArchitectures" in arch_map
+    assert "subArches" not in arch_map
+
+
+def _load_detector():
+    spec = importlib.util.spec_from_file_location(
+        "detect_misconfigurations", SOLUTIONS / "detect_misconfigurations.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.scripts
+def test_detector_flags_short_and_unspecified_host_ports():
+    detect = _load_detector()
+    assert any(
+        item["id"] == detect.FINDING_PUBLISHED_PORT
+        for item in detect.inspect_service("web", {"ports": ["8080:80"]})
+    )
+    assert any(
+        item["id"] == detect.FINDING_PUBLISHED_PORT
+        for item in detect.inspect_service("web", {"ports": ["[::]:8080:80"]})
+    )
+    assert any(
+        item["id"] == detect.FINDING_PUBLISHED_PORT
+        for item in detect.inspect_service(
+            "web", {"ports": [{"target": 80, "published": 8080}]}
+        )
+    )
+    loopback_mappings = [
+        ["127.0.0.1:8080:80"],
+        ["${LAB_BIND_ADDRESS:-127.0.0.1}:8080:80"],
+        [{"target": 80, "published": 8080, "host_ip": "127.0.0.1"}],
+        ["[::1]:8080:80"],
+    ]
+    for ports in loopback_mappings:
+        findings = detect.inspect_service("web", {"ports": ports})
+        assert not any(item["id"] == detect.FINDING_PUBLISHED_PORT for item in findings), ports
 
 
 @pytest.mark.scripts

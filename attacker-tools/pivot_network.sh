@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 9: Network position mapping. Isolated lab only.
 # Does not send SSRF payloads against application endpoints.
 set -u
