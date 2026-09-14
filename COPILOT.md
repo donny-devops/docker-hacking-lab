@@ -13,3 +13,4 @@
   - Security issues
   - Clarity and maintainability
 - Do not rely solely on Copilot for security decisions—always validate manually.
+- For meeting-grounded work, use the in-repo granola-engineer plugin (`AGENTS.md`). Never invent meeting notes or commit API keys.
