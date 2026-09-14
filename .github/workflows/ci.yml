@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "donny-devops/**"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: lab-validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements-dev.txt
+
+      - name: Run lab validation
+        run: bash lab/validate.sh
+
+      - name: Compose config (optional)
+        run: |
+          if docker compose version >/dev/null 2>&1; then
+            docker compose -f docker-compose.yml config >/dev/null
+            docker compose -f docker-compose.hardened.yml config >/dev/null
+            echo "compose config: PASS"
+          else
+            echo "compose CLI unavailable; YAML already validated in pytest"
+          fi

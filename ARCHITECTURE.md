@@ -2,38 +2,36 @@
 
 ## Overview
 
-docker-hacking-lab is a **container‑based security learning environment**:
+docker-hacking-lab is a **container-based security learning environment**:
 
-- Each scenario is a set of Docker services.
-- Scenarios are isolated via networks and volumes.
-- CI/CD and security tooling are demonstrated via GitHub workflows.
+- Each scenario is a Docker Compose service with `lab.role` and `lab.module` labels.
+- Networks: `lab-external` (published to localhost) and `lab-internal` (`internal: true`).
+- CI validates the course catalog, Compose contracts, and script syntax without starting containers.
 
 ## Components
 
-- **Lab Orchestrator**
-  - `docker-compose.yml` files per scenario
-  - Shared base images where appropriate
-
-- **Scenarios**
-  - Misconfigurations (privileged containers, weak isolation)
-  - Network segmentation and firewall rules
-  - Secrets handling and leakage examples
-
+- **Lab orchestrator**
+  - `docker-compose.yml` — insecure teaching baseline
+  - `docker-compose.hardened.yml` — defensive solution topology
+- **Course catalog**
+  - `course/modules/01-privileged-containers.md` … `11-lsm.md`
+  - `course/quizzes/` — 11 module quizzes + 11 finals
+- **Detection / solutions**
+  - `attacker-tools/` — read-only inspection helpers
+  - `solutions/detect_misconfigurations.py` — Compose static analysis
 - **CI/CD**
-  - GitHub Actions workflows in `.github/workflows/`
-  - Optional self‑hosted runners for advanced users
+  - `.github/workflows/ci.yml`
+  - Dependabot for GitHub Actions, `lab/Dockerfile`, and pip
 
-## Security Design
+## Security design
 
-- Default lab runs on a private network.
-- No external exposure unless explicitly configured.
-- Scenarios include:
-  - “Secure” baseline
-  - “Insecure” variant for learning
+- Host publishes bind to `127.0.0.1` only.
+- Insecure services stay labeled (`lab.role: insecure`) and documented.
+- Secrets in Compose are official/example placeholders, never production credentials.
+- Default lab traffic for `lab-internal` has no external gateway.
 
-## Data and Secrets
+## Data and secrets
 
-- Secrets are stored in:
-  - `.env` files (ignored by Git)
-  - GitHub encrypted secrets for CI
-- No real production credentials should ever be used.
+- Local overrides: `.env` (gitignored). Template: `.env.example`.
+- CI uses GitHub encrypted secrets if/when runtime credentials are added.
+- Do not commit real cloud keys. `AKIAIOSFODNN7EXAMPLE` is Amazon's documentation placeholder.
