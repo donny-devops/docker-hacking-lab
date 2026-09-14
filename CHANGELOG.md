@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- In-repo granola-engineer Cursor plugin (agent, skills, always-on meeting rule, Granola MCP URL without secrets)
 - Complete 11-module course catalog, including privileged containers (issue #7)
 - Unique module and final assessments (22 files)
 - Offline validation (`lab/validate.sh`, pytest) and GitHub Actions CI

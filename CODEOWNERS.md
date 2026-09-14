@@ -3,6 +3,7 @@
 Canonical owners file: `.github/CODEOWNERS` (this Markdown file is documentation).
 
 - Global: `@donny-devops`
+- Cursor plugin / agent config: `.cursor/`
 - CI: `.github/`
 - Course catalog: `/course/`
 - Lab runtime: `/lab/`, Compose files

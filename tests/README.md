@@ -1,6 +1,6 @@
 # Tests
 
-Offline checks that keep the lab catalog and Compose contracts passing.
+Offline checks that keep the lab catalog, Compose contracts, and the in-repo granola-engineer plugin passing.
 
 ```bash
 python3 -m pip install -r requirements-dev.txt
