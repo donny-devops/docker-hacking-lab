@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 8: Supply-chain hygiene. Isolated lab only.
 # Does not build or push backdoored images.
 set -u
@@ -11,8 +11,11 @@ elif [[ -f /workspace/docker-compose.yml ]]; then
 fi
 
 if command -v docker >/dev/null 2>&1; then
-  echo "[*] Images without a digest pin in docker images"
-  docker images --format '{{.Repository}}:{{.Tag}} {{.ID}} {{.Digest}}'
+  echo "[*] Local images missing a digest pin"
+  docker images --format '{{.Repository}}:{{.Tag}} {{.Digest}}' | awk '
+    $2 == "<none>" { print "[unpinned] " $1; next }
+    { print "[pinned] " $1 " " $2 }
+  '
 fi
 
 echo "[*] Remediation: pin by digest, sign with cosign, scan in CI, allow-list the registry."

@@ -2,7 +2,7 @@
 ### Hands-on Docker Hacking Course
 **Author: Adonis Jimenez | BizDevStudio**
 
-> Warning: This lab contains intentional vulnerabilities. Run in an isolated environment only. Published ports bind to `127.0.0.1`.
+> Warning: This lab contains intentional vulnerabilities. Run in an isolated environment only. Published ports bind to `127.0.0.1` by default (`LAB_BIND_ADDRESS`).
 
 ## Quick Start
 
@@ -17,17 +17,20 @@ docker compose up -d
 
 Open http://127.0.0.1:8080 for the lab landing page.
 
-Hardened topology (no privileged mode, no Docker socket mount, no host-root bind):
-
-```bash
-docker compose -f docker-compose.hardened.yml up -d
-```
-
-Tear down:
+The insecure and hardened files share `container_name` values, host ports, and subnets. Tear the first stack down before starting the other:
 
 ```bash
 docker compose down -v
+docker compose -f docker-compose.hardened.yml up -d
 ```
+
+Tear down the hardened project (it uses `name: docker-hacking-lab-hardened`):
+
+```bash
+docker compose -f docker-compose.hardened.yml down -v
+```
+
+Hardened topology removes privileged mode, the Docker socket mount, and the host-root bind. The registry is unpublished on the host but stays unauthenticated for peers on `lab-internal`.
 
 ## Course modules
 

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 1: Kernel primitive inspection (read-only). Isolated lab only.
 set -u
 

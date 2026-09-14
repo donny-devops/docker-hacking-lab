@@ -1,5 +1,6 @@
-﻿# Intentional insecure lab. Bind published ports to localhost.
-# Overlay with docker-compose.hardened.yml for the defensive solution.
+# Intentional insecure lab. Bind published ports to localhost.
+# Compare with the standalone file docker-compose.hardened.yml.
+# Do not merge the two files: Compose would keep privileged, socket, and host-root keys.
 
 name: docker-hacking-lab
 
@@ -48,7 +49,7 @@ services:
       - lab-external
       - lab-internal
     ports:
-      - "127.0.0.1:8080:80"
+      - "${LAB_BIND_ADDRESS:-127.0.0.1}:8080:80"
     volumes:
       - ./lab/www:/var/www/html:ro
       # Teaching misconfiguration: Docker API equivalent to host root.
@@ -73,11 +74,11 @@ services:
     networks:
       - lab-internal
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password123
-      POSTGRES_DB: corporate_secrets
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
+      POSTGRES_DB: ${POSTGRES_DB:-corporate_secrets}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d corporate_secrets"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-corporate_secrets}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -94,7 +95,7 @@ services:
     networks:
       - lab-internal
     ports:
-      - "127.0.0.1:5000:5000"
+      - "${LAB_BIND_ADDRESS:-127.0.0.1}:5000:5000"
     environment:
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
     healthcheck:
@@ -145,7 +146,7 @@ services:
     networks:
       - lab-internal
     ports:
-      - "127.0.0.1:9002:8080"
+      - "${LAB_BIND_ADDRESS:-127.0.0.1}:9002:8080"
     cap_drop:
       - ALL
     read_only: true

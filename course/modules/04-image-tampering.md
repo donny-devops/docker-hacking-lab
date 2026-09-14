@@ -16,11 +16,13 @@ docker push registry.example/app:latest
 ## Compliant
 
 ```bash
-docker build -t app@sha256:<digest> .
-cosign sign --key cosign.key app@sha256:<digest>
+docker build -t app:1.0 .
+docker push registry.example/app:1.0
+DIGEST="$(docker image inspect registry.example/app:1.0 --format '{{index .RepoDigests 0}}')"
+cosign sign --key cosign.key "$DIGEST"
 ```
 
-Pin by digest in Compose/Kubernetes. Verify signatures in CI before deploy.
+Pin by digest in Compose/Kubernetes (`image: registry.example/app@sha256:...`). Verify signatures in CI before deploy.
 
 ## Remediation
 
@@ -33,5 +35,5 @@ Pin by digest in Compose/Kubernetes. Verify signatures in CI before deploy.
 
 1. Note that the lab registry has no authentication in the insecure baseline.
 2. Inspect image names used in compose (no digest pins).
-3. In the hardened file, confirm the registry is no longer published to the host.
+3. In the hardened file, confirm the registry is no longer published to the host. Peers on `lab-internal` can still reach it without auth.
 4. Document a digest-pin policy for one service.

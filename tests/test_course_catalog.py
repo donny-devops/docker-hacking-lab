@@ -36,14 +36,12 @@ def test_module_sections_present():
 
 @pytest.mark.catalog
 def test_twenty_two_assessments_exist():
-    files = []
+    expected = []
     for stem in EXPECTED_QUIZ_STEMS:
-        module_quiz = COURSE_QUIZZES / f"{stem}.md"
-        final_quiz = COURSE_QUIZZES / f"{stem}-final.md"
-        assert module_quiz.is_file(), module_quiz
-        assert final_quiz.is_file(), final_quiz
-        files.extend([module_quiz, final_quiz])
-    assert len(files) == 22
+        expected.extend([f"{stem}.md", f"{stem}-final.md"])
+    names = sorted(p.name for p in COURSE_QUIZZES.glob("*.md"))
+    assert names == sorted(expected)
+    assert len(names) == 22
 
 
 @pytest.mark.catalog

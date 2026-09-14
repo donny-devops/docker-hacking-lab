@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # MODULE 9: Network isolation check. Isolated lab only.
 # Does not perform spoofing or packet injection.
 set -u

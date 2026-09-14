@@ -1,6 +1,6 @@
 # What Seccomp, AppArmor, and SELinux Actually Do
 
-Linux security modules filter syscalls (seccomp) or enforce MAC on paths/labels (AppArmor, SELinux). They complement capabilities; they do not replace patching.
+Seccomp filters syscalls. AppArmor and SELinux are Linux Security Modules (MAC). Together with dropped capabilities they reduce the shared-kernel attack surface; they do not replace patching.
 
 ## Attack scenario
 
@@ -29,8 +29,10 @@ docker run --security-opt seccomp=unconfined ubuntu
 ## Compliant
 
 ```bash
-docker run --security-opt seccomp=default --security-opt apparmor=docker-default ubuntu
+docker run --security-opt apparmor=docker-default ubuntu
 ```
+
+Omit the `seccomp=` option to keep Docker's default filter. `seccomp=default` is not a valid alias; Docker treats it as a profile path.
 
 A tighter starting point is `solutions/seccomp-restricted.json` after tracing the app.
 

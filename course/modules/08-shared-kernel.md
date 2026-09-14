@@ -15,7 +15,7 @@ docker run --pid=host --cap-add SYS_ADMIN alpine
 ## Compliant
 
 ```bash
-docker run --user 65534:65534 --pid container --cap-drop ALL alpine
+docker run --user 65534:65534 --cap-drop ALL alpine
 ```
 
 ## Remediation
@@ -29,4 +29,4 @@ docker run --user 65534:65534 --pid container --cap-drop ALL alpine
 1. Confirm lab services do not set `pid: host` in Compose.
 2. From a container, list `/proc/self/ns` and compare inode numbers conceptually with the host.
 3. Use `inspect_internals.sh` to record namespace and seccomp state.
-4. Note that `internal: true` on `lab-internal` reduces accidental east-west internet egress.
+4. Note that `internal: true` on `lab-internal` removes a default external gateway (egress). Containers on that network can still talk to each other.

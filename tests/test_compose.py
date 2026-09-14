@@ -14,8 +14,14 @@ REQUIRED_SERVICES = {
 }
 
 
-def _port_bindings(service: dict) -> list[str]:
-    return [str(item) for item in service.get("ports") or []]
+def _port_bindings(service: dict) -> list:
+    return list(service.get("ports") or [])
+
+
+def _port_text(mapping) -> str:
+    if isinstance(mapping, dict):
+        return str(mapping.get("host_ip") or "")
+    return str(mapping)
 
 
 @pytest.mark.compose
@@ -34,8 +40,9 @@ def test_published_ports_bind_localhost(path):
     services = load_yaml(path)["services"]
     for name, service in services.items():
         for mapping in _port_bindings(service):
-            assert mapping.startswith("127.0.0.1:"), f"{path.name} {name}: {mapping}"
-            assert "0.0.0.0:" not in mapping
+            text = _port_text(mapping)
+            assert "127.0.0.1" in text, f"{path.name} {name}: {mapping}"
+            assert "0.0.0.0" not in text
 
 
 @pytest.mark.compose
@@ -70,3 +77,16 @@ def test_hardened_compose_removes_teaching_findings():
 def test_example_aws_key_is_documentation_placeholder():
     env = load_yaml(COMPOSE_INSECURE)["services"]["vuln-web"]["environment"]
     assert env["AWS_ACCESS_KEY_ID"] == "AKIAIOSFODNN7EXAMPLE"
+
+
+@pytest.mark.compose
+@pytest.mark.parametrize("path", [COMPOSE_INSECURE, COMPOSE_HARDENED])
+def test_compose_interpolates_env_and_has_no_utf8_bom(path):
+    data = path.read_bytes()
+    assert not data.startswith(b"\xef\xbb\xbf"), path.name
+    text = path.read_text(encoding="utf-8")
+    assert "${LAB_BIND_ADDRESS" in text
+    assert "${POSTGRES_USER" in text
+    assert "${POSTGRES_PASSWORD" in text
+    assert "${POSTGRES_DB" in text
+    assert "overlay" not in text.lower()
