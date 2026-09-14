@@ -1,27 +1,19 @@
 ﻿#!/usr/bin/env bash
-# MODULE 8: Supply Chain Attack Demo
-# Simulates typosquatting and backdoored image push
+# MODULE 8: Supply-chain hygiene. Isolated lab only.
+# Does not build or push backdoored images.
+set -u
 
-REGISTRY="registry:5000"
+echo "[*] Compose image references (floating tags are a finding)"
+if [[ -f docker-compose.yml ]]; then
+  awk '/image:/{print}' docker-compose.yml
+elif [[ -f /workspace/docker-compose.yml ]]; then
+  awk '/image:/{print}' /workspace/docker-compose.yml
+fi
 
-echo "[*] Building typosquatted image (ngiinx vs nginx)..."
-cat > /tmp/Dockerfile.typo << 'EOF'
-FROM alpine:3.18
-RUN echo "Legitimate nginx-looking app" > /app.sh
-RUN echo '#!/bin/sh' > /entrypoint.sh && \
-    echo 'echo "[BACKDOOR] Reverse shell would connect to C2 here"' >> /entrypoint.sh && \
-    echo '/bin/sh' >> /entrypoint.sh && \
-    chmod +x /entrypoint.sh
-CMD ["/entrypoint.sh"]
-EOF
+if command -v docker >/dev/null 2>&1; then
+  echo "[*] Images without a digest pin in docker images"
+  docker images --format '{{.Repository}}:{{.Tag}} {{.ID}} {{.Digest}}'
+fi
 
-docker build -t /ngiinx:latest -f /tmp/Dockerfile.typo /tmp
-docker push /ngiinx:latest
-echo "[!] Backdoored typosquat image pushed to registry"
-
-echo "[*] Scanning registry for all images..."
-curl -sf http:///v2/_catalog
-
-echo "[*] Pulling and inspecting backdoored image layers..."
-docker pull /ngiinx:latest
-docker history /ngiinx:latest --no-trunc
+echo "[*] Remediation: pin by digest, sign with cosign, scan in CI, allow-list the registry."
+echo "[*] Do not push typosquat tags into a shared registry."

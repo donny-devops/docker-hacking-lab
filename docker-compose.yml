@@ -1,4 +1,7 @@
-﻿version: "3.9"
+﻿# Intentional insecure lab. Bind published ports to localhost.
+# Overlay with docker-compose.hardened.yml for the defensive solution.
+
+name: docker-hacking-lab
 
 networks:
   lab-external:
@@ -8,6 +11,7 @@ networks:
         - subnet: 172.20.0.0/24
   lab-internal:
     driver: bridge
+    internal: true
     ipam:
       config:
         - subnet: 172.22.0.0/24
@@ -18,6 +22,9 @@ services:
     image: kalilinux/kali-rolling
     container_name: attacker
     hostname: attacker
+    labels:
+      lab.role: workstation
+      lab.module: "0,1,2"
     networks:
       - lab-external
       - lab-internal
@@ -33,47 +40,82 @@ services:
     image: php:7.4-apache
     container_name: vuln-web
     hostname: vuln-web
+    labels:
+      lab.role: insecure
+      lab.module: "2,5,7"
+      lab.finding: docker-socket-mount
     networks:
       - lab-external
       - lab-internal
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
     volumes:
+      - ./lab/www:/var/www/html:ro
+      # Teaching misconfiguration: Docker API equivalent to host root.
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       AWS_ACCESS_KEY_ID: AKIAIOSFODNN7EXAMPLE
       DB_PASSWORD: SuperSecret123!
+    healthcheck:
+      test: ["CMD-SHELL", "pidof apache2 >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
     restart: "no"
 
   internal-db:
     image: postgres:13-alpine
     container_name: internal-db
     hostname: internal-db
+    labels:
+      lab.role: insecure
+      lab.module: "9"
     networks:
       - lab-internal
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password123
       POSTGRES_DB: corporate_secrets
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d corporate_secrets"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: "no"
 
   registry:
     image: registry:2
     container_name: registry
     hostname: registry
+    labels:
+      lab.role: insecure
+      lab.module: "7,8"
+      lab.finding: unauthenticated-registry
     networks:
       - lab-internal
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:5000/v2/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
     restart: "no"
 
   escape-target-privileged:
     image: ubuntu:20.04
     container_name: escape-target-privileged
     hostname: escape-privileged
+    labels:
+      lab.role: insecure
+      lab.module: "3"
+      lab.finding: privileged
     networks:
       - lab-internal
     privileged: true
+    init: true
     command: sleep infinity
     restart: "no"
 
@@ -81,10 +123,15 @@ services:
     image: ubuntu:20.04
     container_name: escape-target-hostmount
     hostname: escape-hostmount
+    labels:
+      lab.role: insecure
+      lab.module: "4"
+      lab.finding: host-root-mount
     networks:
       - lab-internal
     volumes:
       - /:/host:rw
+    init: true
     command: sleep infinity
     restart: "no"
 
@@ -92,10 +139,13 @@ services:
     image: nginxinc/nginx-unprivileged:alpine
     container_name: defender-hardened
     hostname: defender-hardened
+    labels:
+      lab.role: secure-baseline
+      lab.module: "10,11"
     networks:
       - lab-internal
     ports:
-      - "9002:8080"
+      - "127.0.0.1:9002:8080"
     cap_drop:
       - ALL
     read_only: true
@@ -106,4 +156,9 @@ services:
       - /tmp
       - /var/cache/nginx
       - /var/run
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
     restart: "no"
