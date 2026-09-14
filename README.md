@@ -49,6 +49,10 @@ Catalog files live in `course/modules/` (11 modules) with 22 assessments in `cou
 
 Hands-on compose modules from the original lab map onto the same stack (setup, internals, enumeration, privileged, host-mount, socket, TCP daemon, registry, supply chain, network, runtime defense). Detection helpers are in `attacker-tools/`; static analysis is `solutions/detect_misconfigurations.py`.
 
+## Agents
+
+Cursor agents in this repo can use **granola-engineer** to ground work in Granola meeting decisions. Open the project in Cursor (workspace `.cursor/` files load automatically), or copy `.cursor/plugins/granola-engineer` to `~/.cursor/plugins/local/granola-engineer`. Sign-in is browser OAuth; no API keys belong in git. See `AGENTS.md`.
+
 ## Checks
 
 CI runs `bash lab/validate.sh` (pytest + `bash -n`). Keep that job green before merge.

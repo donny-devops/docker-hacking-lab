@@ -22,6 +22,9 @@ docker-hacking-lab is a **container-based security learning environment**:
 - **CI/CD**
   - `.github/workflows/ci.yml`
   - Dependabot for GitHub Actions, `lab/Dockerfile`, and pip
+- **Agents**
+  - `.cursor/plugins/granola-engineer/` — Cursor plugin (granola-engineer)
+  - Workspace copies under `.cursor/` so the lab loads rules, skills, and MCP without extra install
 
 ## Security design
 

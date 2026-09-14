@@ -21,3 +21,5 @@
 2. Inspect labels and findings with `attacker-tools/` helpers.
 3. Apply the hardened topology and re-run the detector.
 4. Keep the `lab-validate` GitHub Actions check green.
+
+Cursor agents: the granola-engineer plugin (rules, skills, `/granola-engineer`) is documented in `AGENTS.md` and `.cursor/plugins/granola-engineer/README.md`.
